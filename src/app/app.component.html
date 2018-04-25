@@ -1,0 +1,66 @@
+<div *ngIf="people" style="padding: 15px;">
+    <!-- [paginator]="true"  -->
+    <!-- [lazy]="true"  -->
+    <!-- (onLazyLoad) ="loadPage($event)" -->
+    <!-- (onPage)="paginate($event)" -->
+    <!-- [pageLinks]="5" -->
+    <!-- [totalRecords]="totalPages" -->
+    <!-- [rows]="10" -->
+    <p-table 
+        #dt 
+        [columns]="cols" 
+        [value]="people" 
+        [loading]="loader">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+            <tr>
+                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input
+                        *ngSwitchCase="'name'"
+                        autocomplete="off"
+                        pInputText
+                        type="text"
+                        (input)="dt.filter($event.target.value, col.field)"
+                        placeholder="Name filter">
+                    <input 
+                        *ngSwitchCase="'gender'" 
+                        autocomplete="off"
+                        pInputText 
+                        type="text" 
+                        (input)="dt.filter($event.target.value, col.field)" 
+                        placeholder="Gender filter">
+                    <input 
+                        *ngSwitchCase="'birth_year'" 
+                        pInputText 
+                        autocomplete="off"
+                        type="text" 
+                        (input)="dt.filter($event.target.value, col.field)" 
+                        placeholder="Birth year filter">
+                    <input
+                        *ngSwitchCase="'filmTitles'"
+                        pInputText
+                        autocomplete="off"
+                        type="text"
+                        (input)="dt.filter($event.target.value, col.field)" 
+                        placeholder="Film filter">
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+                <td>{{ rowData.name }}</td>
+                <td>{{ rowData.gender }}</td>
+                <td>{{ rowData.birth_year }}</td>
+                <td>
+                    <ul>
+                        <li *ngFor="let film of rowData.filmTitles"> {{ film }}</li>
+                    </ul>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
